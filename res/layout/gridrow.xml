@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:padding="5dp"
+	android:background="@drawable/gridrow_border"
+	android:onClick="handleClick">
+
+    <ImageView
+    	android:layout_height="wrap_content"
+    	android:id="@+id/imageView_flag"
+    	android:layout_width="wrap_content"
+    	android:layout_alignParentTop="true"
+    	android:layout_margin="10dip"
+    	android:layout_centerHorizontal="true">
+    </ImageView>
+
+	<TextView
+		android:text="TextView"
+		android:layout_height="wrap_content"
+		android:id="@+id/textView_country_name"
+		android:layout_width="wrap_content"
+		android:layout_below="@+id/imageView_flag"
+		android:layout_centerHorizontal="true"
+		android:textSize="14sp"
+		android:ellipsize="marquee"
+		android:singleLine="true"
+		android:textColor="#202020">
+	</TextView>
+	
+</RelativeLayout>
