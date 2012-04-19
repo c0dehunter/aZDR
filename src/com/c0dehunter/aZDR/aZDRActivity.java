@@ -20,4 +20,9 @@ public class aZDRActivity extends Activity {
     	Intent showNextActivity=new Intent(aZDRActivity.this, selectCountryActivity.class);
     	aZDRActivity.this.startActivity(showNextActivity);
     }
+    
+    public void showDiseases(View v){
+    	Intent showNextActivity=new Intent(aZDRActivity.this, selectDiseaseActivity.class);
+    	aZDRActivity.this.startActivity(showNextActivity);
+    }
 }

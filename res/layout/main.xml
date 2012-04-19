@@ -49,7 +49,8 @@
 					android:text="Diseases"
 					android:drawablePadding="5dip"
 		            android:drawableTop="@drawable/icon2"
-		            android:background="@android:color/transparent"/>
+		            android:background="@android:color/transparent"
+		            android:onClick="showDiseases"/>
 		        
 		        <!--  
 		        <Button
