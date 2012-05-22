@@ -10,7 +10,7 @@
     <GridView  
         android:layout_height="wrap_content"  
         android:id="@+id/gridView_countryList"  
-        android:layout_width="match_parent"  
+        android:layout_width="fill_parent"  
         android:numColumns="auto_fit"  
         android:horizontalSpacing="10dp"  
         android:verticalSpacing="10dp">  

@@ -8,6 +8,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -82,7 +83,14 @@ public class selectDiseaseActivity extends Activity{
         
         list.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view, int position,	long id) {
-				Toast.makeText(getApplicationContext(), ((TextView)view).getText(), Toast.LENGTH_LONG).show();	
+				//Toast.makeText(getApplicationContext(), ((TextView)view).getText(), Toast.LENGTH_LONG).show();	
+				Intent showNextActivity=new Intent(selectDiseaseActivity.this, diseaseActivity.class);
+		    	Bundle extraInfo=new Bundle();
+		    	extraInfo.putString("DISEASE", ((TextView)view).getText().toString());
+		    	
+		    	showNextActivity.putExtras(extraInfo);
+		    	
+		    	selectDiseaseActivity.this.startActivity(showNextActivity);
 			}
 		});
     }
