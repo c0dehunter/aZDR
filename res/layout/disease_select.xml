@@ -12,6 +12,8 @@
 	        android:id="@+id/listView_diseases"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
+	        android:divider="#818181"
+    		android:dividerHeight="1dp"
 	        android:background="#A0A0A0">
 	    </ListView>
 	

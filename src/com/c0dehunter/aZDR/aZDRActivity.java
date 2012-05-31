@@ -4,18 +4,20 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.TextUtils.TruncateAt;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
-import android.view.animation.AnimationUtils;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -88,13 +90,10 @@ public class aZDRActivity extends Activity {
 					tv1.setPadding(40, 7, 0, 0);
 					tv1.setTextColor(Color.BLACK);
 					
-					tv2.setPadding(40, 4, 10, 0);
+					tv2.setPadding(40, 4, 0, 0);
 					tv2.setTextColor(Color.DKGRAY);
-					
-
 					tv2.setMaxLines(4);
-					//tv2.setEllipsize(TruncateAt.MARQUEE);
-					//110
+
 					LinearLayout wrapper=new LinearLayout(parentActivity);
 					wrapper.setOrientation(1);
 					wrapper.addView(tv1);
@@ -115,7 +114,15 @@ public class aZDRActivity extends Activity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.main);
         
-        new getOutbreaksTask(this).execute("http://wwwnc.cdc.gov/travel/notices.htm"); //pridobivanje outbreakov
+        if(isOnline()) new getOutbreaksTask(this).execute("http://wwwnc.cdc.gov/travel/notices.htm"); //pridobivanje outbreakov
+        else {
+        	Toast.makeText(getBaseContext(), "NI interneta", Toast.LENGTH_SHORT);
+//        	AlertDialog.Builder popupBuilder = new AlertDialog.Builder(this);
+//        	TextView myMsg = new TextView(this);
+//        	myMsg.setText("Please turn on internet connectivity and start again!");
+//        	myMsg.setGravity(Gravity.CENTER_HORIZONTAL);
+//        	popupBuilder.setView(myMsg);
+        }
     }
     
     public void showDestinations(View v){
@@ -126,5 +133,15 @@ public class aZDRActivity extends Activity {
     public void showDiseases(View v){
     	Intent showNextActivity=new Intent(aZDRActivity.this, selectDiseaseActivity.class);
     	aZDRActivity.this.startActivity(showNextActivity);
+    }
+    
+    public boolean isOnline() {
+        ConnectivityManager cm =
+            (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            return true;
+        }
+        return false;
     }
 }

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pdf_wiki_footer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+    <ImageButton
+	    android:id="@+id/btn_PDF"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:src="@drawable/view_pdf"
+	    android:layout_marginLeft="20dip"
+	    android:layout_alignParentLeft="true"
+	    android:background="#00000000"
+	    android:onClick="showPDF" />
+      
+    <ImageButton
+	    android:id="@+id/btn_wiki"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:src="@drawable/wiki_btn"
+	    android:layout_marginRight="20dip"
+	    android:layout_alignParentRight="true"
+	    android:background="#00000000"
+	    android:onClick="showWiki" />
+
+</RelativeLayout>

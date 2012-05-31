@@ -12,6 +12,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,12 +21,18 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.AndroidCharacter;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,23 +63,19 @@ public class diseaseActivity extends Activity{
 					
 					//za sliko
 					doc2 = Jsoup.connect(url[1]).timeout(10*1000).get();
-					elementi[1]= doc2.select("li a.thumbnail");
-					Log.d("",doc2.text());
-				    
+					elementi[1]= doc2.select("li a.thumbnail");				    
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				Log.d("","dela");
+
 				return elementi;
 			}
 			
 			@Override
 			protected void onPostExecute(Elements[] elems){
 				if(this.progress.isShowing()) this.progress.dismiss();
-				
-				Log.d("","dela2");
-				
-				if(elems[0].isEmpty()){
+							
+				if(elems[0] == null){
 					Toast.makeText(parentActivity, "Server seems unavailable, try again later.", Toast.LENGTH_LONG).show();
 					diseaseActivity.this.finish();
 				}
@@ -82,35 +86,33 @@ public class diseaseActivity extends Activity{
 					tv.setLayoutParams(lp);
 					tv.setTextColor(Color.BLACK);
 					tv.setText(elems[0].get(3).text()+"\n\n"+elems[0].get(4).text());
-					LinearLayout layout = (LinearLayout) parentActivity.findViewById(R.id.disease_info);
+					LinearLayout layout = (LinearLayout) parentActivity.findViewById(R.id.disease_scrollview_lin_layout);
 					layout.addView(tv);
-					
-
-					
-					Log.d("","dela3 #"+elems[1].size());
+				
 					Element img = elems[1].get(0);
-					Log.d("","dela4");
 				    ImageView imgView=new ImageView(parentActivity);
-				    Log.d("","dela5");
-				    //imgView.setImageDrawable(Drawable.createFromPath(img.absUrl("src")));
+				    imgView.setPadding(getPixelsFromDip(10), 0, getPixelsFromDip(10), 0);
 					URL newurl = null;
+					boolean imageSet=false;
 					try {
 						newurl = new URL(img.attr("href"));
-						Log.d("",img.attr("href"));
 						
 						Bitmap mIcon_val = BitmapFactory.decodeStream(newurl.openConnection().getInputStream());
 						imgView.setImageBitmap(mIcon_val);
+						imageSet=true;
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					
-					
-				    Log.d("","dela6");
-				   // Log.d("",img.attr("src"));
+					imgView.setPadding(0, 0, 0, getPixelsFromDip(20));
 				    layout.addView(imgView);
-				    Log.d("","dela7");
 				    
+				    LayoutInflater layoutInflater = (LayoutInflater) parentActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				    int indx=1;
+				    if(imageSet) indx=2;
+				    else indx=1;
+				    layout.addView(layoutInflater.inflate(R.layout.pdf_wiki_footer, layout, false), 2);
 				}
 			}
 		}
@@ -135,4 +137,29 @@ public class diseaseActivity extends Activity{
         String url2="http://www.exalead.com/search/image/results/?q="+disease_name;
         new getDataTask(this).execute(url1,url2);
     }
+	
+	public int getPixelsFromDip(int dip){
+		final float scale = getResources().getDisplayMetrics().density;
+	    return (int) (dip * scale + 0.5f);
+	}
+	
+	public void showPDF(View view){
+		Intent showNextActivity=new Intent(diseaseActivity.this, viewPDFActivity.class);
+    	Bundle extraInfo=new Bundle();
+    	TextView txt_diseaseName=(TextView) findViewById(R.id.txt_diseaseName);
+    	extraInfo.putString("DISEASE", (String) (txt_diseaseName.getText()));
+    	
+    	showNextActivity.putExtras(extraInfo);
+    	diseaseActivity.this.startActivity(showNextActivity);
+	}
+	
+	public void showWiki(View view){
+		Intent showNextActivity=new Intent(diseaseActivity.this, viewWikiActivity.class);
+    	Bundle extraInfo=new Bundle();
+    	TextView txt_diseaseName=(TextView) findViewById(R.id.txt_diseaseName);
+    	extraInfo.putString("DISEASE", (String) (txt_diseaseName.getText()));
+    	
+    	showNextActivity.putExtras(extraInfo);
+    	diseaseActivity.this.startActivity(showNextActivity);
+	}
 }
